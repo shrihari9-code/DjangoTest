@@ -1,12 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 class Category(models.Model):
-    """
-    Very basic structure. To be further built up.
-    """
-
     name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
 
@@ -15,6 +10,10 @@ class Category(models.Model):
             return f"{self.name} (#{self.id})"
         else:
             return f"{self.name} [INACTIVE]"
+
+    @property
+    def count_products(self):
+        return self.products.count()
 
     class Meta:
         db_table = "category"

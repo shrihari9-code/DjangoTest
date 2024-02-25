@@ -1,16 +1,13 @@
 from django.contrib import admin
-
 from categories.models import Category
 from products.admin import ProductInline
 
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "is_active")
+    list_display = ("id", "name", "is_active", "count_products")  # Display count_products in list view
     ordering = ("id",)
     search_fields = ("name",)
     list_filter = ("is_active",)
-    fields = ("id", "name", "is_active")
-    # autocomplete_fields = ()
-    readonly_fields = ("id",)
+    fields = ("id", "name", "is_active", "count_products")  # Include count_products in change page form
+    readonly_fields = ("id", "count_products")
     inlines = (ProductInline,)
