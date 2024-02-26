@@ -33,13 +33,8 @@ class ProductInline(admin.StackedInline):
     
 @admin.register(Sku)
 class SkuAdmin(admin.ModelAdmin):
-    list_display = ['product_name', 'size', 'price']
+    list_display = ['product_name', 'size', 'selling_price', 'platform_commission', 'cost_price']
 
     def product_name(self, obj):
         return obj.product.name
 
-    def size_display(self, obj):
-        return f"{obj.size} gm"
-
-    def price_display(self, obj):
-        return f"Rs. {obj.price}"

@@ -31,11 +31,13 @@ class Product(models.Model):
 class Sku(models.Model):
     product = models.ForeignKey(Product, related_name='skus', on_delete=models.CASCADE)
     size = models.PositiveSmallIntegerField(unique=True)
-    price = models.PositiveSmallIntegerField()
+    selling_price = models.PositiveSmallIntegerField(default=0) 
+    platform_commission = models.PositiveSmallIntegerField(default=0)
+    cost_price = models.PositiveSmallIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.selling_price = self.cost_price + self.platform_commission
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.product.name} - {self.size} gm - Rs. {self.price}"
-
-    class Meta:
-        verbose_name = _("Sku")
-        verbose_name_plural = _("Skus")
+        return f"{self.product.name} - {self.size} gm"
