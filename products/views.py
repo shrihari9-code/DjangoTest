@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -8,6 +9,8 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from .models import Product, Sku
 from .serializers import ProductListSerializer, SkuSerializer
+from categories.models import Category
+from django.db.models import Count
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
@@ -62,3 +65,30 @@ def edit_sku_status(request, sku_id):
         return Response({'error': 'Status field is required'}, status=HTTP_400_BAD_REQUEST)
     except Sku.DoesNotExist:
         return Response({'error': 'Sku not found'}, status=HTTP_404_NOT_FOUND)
+    
+
+def active_categories_with_sku_count(request):
+    categories = Category.objects.filter(is_active=True).annotate(num_skus=Count('products__skus'))
+    category_list = []
+    for category in categories:
+        category_info = {
+            'name': category.name,
+            'sku_count': category.num_skus,
+            'product_count': category.count_products  # Using the count_products property
+        }
+        category_list.append(category_info)
+    return JsonResponse({"categories": category_list})
+
+def skus_with_category(request):
+    skus = Sku.objects.select_related('product__category')
+    sku_list = []
+    for sku in skus:
+        category_name = sku.product.category.name if sku.product.category else 'Uncategorized'
+        sku_info = {
+            'id': sku.id,
+            'size': sku.size,
+            'measurement_unit': sku.get_measurement_unit_display(),
+            'category': category_name,
+        }
+        sku_list.append(sku_info)
+    return JsonResponse({"skus": sku_list})

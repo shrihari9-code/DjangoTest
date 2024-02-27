@@ -169,6 +169,97 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "skus_with_category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/products/api/skus_with_category/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"api",
+						"skus_with_category",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "active_categories_with_sku_count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/products/api/active_categories_with_sku_count/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"api",
+						"active_categories_with_sku_count",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "headerPrefix",
+				"value": "Token",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "staff-token",
+			"value": "1a66627570137de385c36dfe5cc23ea6ae1accc2",
+			"type": "string"
+		},
+		{
+			"key": "customer-token",
+			"value": "32e6bc7f3de1ee132e5c7f151d56ce0d9267a829",
+			"type": "string"
 		}
 	]
 }
