@@ -33,8 +33,9 @@ class ProductInline(admin.StackedInline):
     
 @admin.register(Sku)
 class SkuAdmin(admin.ModelAdmin):
-    list_display = ['product_name', 'size', 'selling_price', 'platform_commission', 'cost_price']
+    list_display = ('product', 'size', 'measurement_unit', 'selling_price', 'platform_commission', 'cost_price', 'status', 'markup_percentage')
+    list_filter = ('status',)
+    search_fields = ('product__name',)
 
-    def product_name(self, obj):
-        return obj.product.name
+
 

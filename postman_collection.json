@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "3dc3793d-b9a6-443a-9e25-37c5c539dad5",
+		"_postman_id": "644e73b4-36be-4bd7-b229-0485eb4b68ef",
 		"name": "Homble Backend Assessment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16443486",
-		"_collection_link": "https://myjaxy.postman.co/workspace/b0868cdd-6095-4277-af34-8e4538a7f871/collection/16443486-3dc3793d-b9a6-443a-9e25-37c5c539dad5?action=share&source=collection_link&creator=16443486"
+		"_exporter_id": "26175102",
+		"_collection_link": "https://grey-spaceship-600209.postman.co/workspace/New-Team-Workspace~72becd34-c043-4d07-a45a-2537555917e9/collection/26175102-644e73b4-36be-4bd7-b229-0485eb4b68ef?action=share&source=collection_link&creator=26175102"
 	},
 	"item": [
 		{
@@ -13,7 +13,8 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/products/",
+					"raw": "http://localhost:8000/products/?is_refrigerated=true",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -21,57 +22,153 @@
 					"path": [
 						"products",
 						""
+					],
+					"query": [
+						{
+							"key": "is_refrigerated",
+							"value": "true"
+						}
 					]
 				}
 			},
 			"response": []
-		}
-	],
-	"auth": {
-		"type": "oauth2",
-		"oauth2": [
-			{
-				"key": "headerPrefix",
-				"value": "Token",
-				"type": "string"
+		},
+		{
+			"name": "categories list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
 			},
-			{
-				"key": "addTokenTo",
-				"value": "header",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
 		},
 		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "staff-token",
-			"value": "1a66627570137de385c36dfe5cc23ea6ae1accc2",
-			"type": "string"
+			"name": "Create_Sku",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token f23b3df97c070b504590582bc537dd7ee2f354ad",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\": 1, \r\n    \"size\": 500,   \r\n    \"platform_commission\": 10, \r\n    \"cost_price\": 50, \r\n    \"measurement_unit\": \"gm\" \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/products/api/create_sku/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"api",
+						"create_sku",
+						""
+					]
+				}
+			},
+			"response": []
 		},
 		{
-			"key": "customer-token",
-			"value": "32e6bc7f3de1ee132e5c7f151d56ce0d9267a829",
-			"type": "string"
+			"name": "Get Product Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token f23b3df97c070b504590582bc537dd7ee2f354ad",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/products/api/product_details/1/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"api",
+						"product_details",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Sku Status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token f23b3df97c070b504590582bc537dd7ee2f354ad",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/products/api/edit_sku_status/1/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"products",
+						"api",
+						"edit_sku_status",
+						"1",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

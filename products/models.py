@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
+from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator
 
 
 class Product(models.Model):
@@ -30,14 +32,38 @@ class Product(models.Model):
 
 class Sku(models.Model):
     product = models.ForeignKey(Product, related_name='skus', on_delete=models.CASCADE)
-    size = models.PositiveSmallIntegerField(unique=True)
-    selling_price = models.PositiveSmallIntegerField(default=0) 
+    size = models.PositiveSmallIntegerField()
+    selling_price = models.PositiveSmallIntegerField(default=0)
     platform_commission = models.PositiveSmallIntegerField(default=0)
     cost_price = models.PositiveSmallIntegerField(default=0)
+    measurement_unit_choices = [
+        ('gm', _('Grams')),
+        ('kg', _('Kilograms')),
+        ('mL', _('Milliliters')),
+        ('L', _('Liters')),
+        ('pc', _('Piece')),
+    ]
+    measurement_unit = models.CharField(max_length=2, choices=measurement_unit_choices)
+    status_choices = [
+        (0, _('Pending for approval')),
+        (1, _('Approved')),
+        (2, _('Discontinued')),
+    ]
+    status = models.IntegerField(choices=status_choices, default=0)
+
+    @property
+    def markup_percentage(self):
+        if self.cost_price > 0:
+            return round((self.platform_commission / self.cost_price) * 100, 2)
+        return 0
 
     def save(self, *args, **kwargs):
         self.selling_price = self.cost_price + self.platform_commission
         super().save(*args, **kwargs)
 
+    def clean(self):
+        if self.size > 999:
+            raise ValidationError(_('Size must be less than or equal to 999.'))
+
     def __str__(self):
-        return f"{self.product.name} - {self.size} gm"
+        return f"{self.product.name} - {self.size} {self.measurement_unit}"
